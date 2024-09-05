@@ -1,0 +1,309 @@
+---
+title: "STAT 3220 Final Project P2"
+author: "Info Crunchers"
+date: "2023-11-21"
+fontsize: 12pt
+geometry: margin=1in
+urlcolor: black
+output: pdf_document
+header-includes:
+- \usepackage{setspace}
+- \onehalfspacing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, highlight=FALSE, comment=NA, warnings=FALSE,message=FALSE)
+```
+
+## Data Cleaning
+
+```{r, echo=F, warning=FALSE,results=FALSE}
+## Use this chunk for reading in packages.
+library(dplyr)
+library(corrplot)
+library(car)
+library(Hmisc)
+library(olsrr)
+library(MASS)
+
+## Data Cleaning
+#reading in og data
+nbaOg <- read.csv("nbaStats.csv", header=T)
+nbaOg <- nbaOg[,-1]
+colnames(nbaOg)[4] <- "allStar"
+
+#changing age to quantitative
+interval1 <- which(nbaOg$Age < 30)
+interval2 <- which(30 <= nbaOg$Age)
+
+nbaOg$Age[interval1] <- c("Under 30")
+nbaOg$Age[interval2] <- c("30 and Over")
+```
+
+## Box-Cox Transformation
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Box-Cox to determine response transformation
+#orginal Salary
+nbaBC <- nbaOg
+nbaBC$Salary <- (nbaOg$sqrtSalary)^2
+nbaModBC <- lm(Salary~FGA+TS.+GP+Age+allStar, data=nbaBC)
+summary(nbaModBC)
+
+hist(nbaBC$Salary, breaks=5, xlab="Player Salaries (in millions)", 
+     main="Histogram of NBA Salaries (2022-2023)")
+
+#box-cox (lambda ~ 0.5 -> sqrtSalary)
+boxcox(nbaModBC, lambda=seq(-3,3))
+
+hist(nbaOg$sqrtSalary, breaks=5, xlab="Player Sqrt Salaries (in millions)", 
+     main="Histogram of NBA Salaries (2022-2023)")
+```
+
+## Variable Screening for Multicollinearity on Quantitatives
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Variable Screening
+#pairwise multicollinearity of explanatory
+nbaCor <- round(cor(nbaOg[,6:20]),4)
+#heat map
+corrplot(nbaCor)
+
+#VIF for quantitatives
+nbaMod1 <- lm(sqrtSalary~.-Player-sqrtSalary-Position-allStar-Age, data=nbaOg)
+summary(nbaMod1)
+#individual VIF (>10 is concerning)
+nbaVif1 <- round(vif(nbaMod1),6)
+nbaVif1 #these are over: GP, MP, MPG, UR%, OWS, DWS, WS, VORP, FGM, FGA are over
+#average VIF (>3 is concerning)
+mean(nbaVif1) #mean of 447.376 -> multicollinearity exists
+#stepwise regression
+ols_step_both_p(nbaMod1,pent=0.15,prem=0.15,details=F)
+
+#VIF with 1st new model
+nbaMod2 <- lm(sqrtSalary~GP+FGA+FGM+TS.+MP, data=nbaOg)
+summary(nbaMod2)
+#individual VIF for stepwise regression model
+nbaVif2 <- round(vif(nbaMod2),6)
+nbaVif2
+#average VIF for stepwise regression model
+mean(nbaVif2)
+#stepwise regression
+ols_step_backward_p(nbaMod2,prem=0.15,details=F)
+
+#VIF with 2nd new model
+nbaMod3 <- lm(sqrtSalary~FGA+TS.+GP, data=nbaOg)
+summary(nbaMod3)
+#individual VIF for stepwise regression model
+nbaVif3 <- round(vif(nbaMod3),6)
+nbaVif3 #none over
+#average VIF for stepwise regression model
+mean(nbaVif3) #mean of 1.224606 -> no concern of multicollinearity
+
+## Fitting Final Quantitative
+summary(nbaMod3)
+```
+
+1st Stepwise Regression Model:
+$E(sqrtSalary) = \beta_0 + \beta_1FGA + \beta_2FGM + \beta_3VORP + \beta_4MP + \beta_5WS$
+Final Quantitative Model:
+$E(sqrtSalary) = \beta_0 + \beta_1FGA + \beta_2TS. + \beta_3GP$
+
+Quantitative Global F Test
+-   *Hypotheses*:
+  -   $H_0: \beta_1 = \beta_2 = \beta_3 = 0$ (the model is not adequate)
+  -   $H_a$:at least one of $\beta_1 , \beta_2 , \beta_3$ does not equal 0 (the model is adequate)
+-   *Distribution of test statistic*: F with 3, 96 DF
+-   *Test Statistic*: F = 24.05
+-   *Pvalue*: 1.078e-11
+-   *Decision*: 1.078e-11 < 0.05 -> REJECT H0
+-   *Conclusion*: The model with field goals attempted, true shooting percentage, and games played is adequate at predicting the square root salary of the players.
+
+## Fitting Qualitatives
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Assessing Qualitatives
+#visualizing qualitatives (EDA)
+boxplot(sqrtSalary~Age, nbaOg, ylab="Sqrt Salary (in millions)") 
+boxplot(sqrtSalary~Position, nbaOg, ylab="Sqrt Salary (in millions)") #does not seem significant
+boxplot(sqrtSalary~allStar, nbaOg, ylab="Sqrt Salary (in millions)") 
+
+tapply(nbaOg$sqrtSalary, nbaOg$Age, summary)
+tapply(nbaOg$sqrtSalary, nbaOg$Position, summary)
+tapply(nbaOg$sqrtSalary, nbaOg$allStar, summary)
+```
+
+Final Qualitative Model:
+$E(sqrtSalary) = \beta_0 + \beta_1FGA + \beta_2TS. + \beta_3GP + \beta_4AgeU + \beta_5allStarY$
+where AgeU = {1 if under 30, 0 otherwise},
+allStarY = {1 if yes, 0 otherwise}
+
+## Hypothesizing Model: Interactions & Higher Order Terms EDA
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Interaction Plot for QUAL x QUAL 
+interaction.plot(nbaOg$Age, nbaOg$Position, nbaOg$sqrtSalary, fun=mean, 
+                 trace.label="Position", xlab="2022-23 Player Age", 
+                 ylab="Sqrt Salary (in millions)") #no interaction age x position
+interaction.plot(nbaOg$Age, nbaOg$allStar, nbaOg$sqrtSalary, fun=mean, 
+                 trace.label="All Star", xlab="2022-23 Player Age", 
+                 ylab="Sqrt Salary (in millions)") #no interaction age x allStar
+interaction.plot(nbaOg$Position, nbaOg$allStar, nbaOg$sqrtSalary, fun=mean, 
+                 trace.label="All Star", xlab="2022-23 Player Position", 
+                 ylab="Sqrt Salary (in millions)") #no interaction position x allStar
+
+## Interactions btw QUAL x QUAN
+#age x QUAN
+for (i in c(20, 11, 6)){
+  plot(sqrtSalary~nbaOg[,i], col=factor(Age), data=nbaOg, 
+       xlab=colnames(nbaOg)[i], ylab="Sqrt Salary (in millions)")
+  legend("topleft", legend = levels(factor(nbaOg$Age)), pch = 19, 
+       col = factor(levels(factor(nbaOg$Age))))
+}
+
+#position x QUAN
+for (i in c(20, 11, 6)){
+  plot(sqrtSalary~nbaOg[,i], col=factor(Position), data=nbaOg, 
+       xlab=colnames(nbaOg)[i], ylab="Sqrt Salary (in millions)")
+  legend("topleft", legend = levels(factor(nbaOg$Position)), pch = 19, 
+       col = factor(levels(factor(nbaOg$Position))))
+}
+
+#allStar x QUAN
+for (i in c(20, 11, 6)){
+  plot(sqrtSalary~nbaOg[,i], col=factor(allStar), data=nbaOg, 
+       xlab=colnames(nbaOg)[i], ylab="Sqrt Salary (in millions)")
+  legend("topleft", legend = levels(factor(nbaOg$allStar)), pch = 19, 
+       col = factor(levels(factor(nbaOg$allStar))))
+}
+
+## Assessing Higher Order Terms (none)
+for(i in names(nbaOg)[c(20, 11, 6)]){
+  plot(nbaOg[,i], nbaOg$sqrtSalary, xlab=i, ylab="Sqrt Salary (in millions)")
+}
+```
+
+## Determining Best Model for E(y)
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Individual T Tests: Fitting Model for Qualitatives (no interactions/higher order terms)
+nbaMod4 <- lm(sqrtSalary~FGA+TS.+GP+Age, data=nbaOg)
+summary(nbaMod4)
+nbaMod5 <- lm(sqrtSalary~FGA+TS.+GP+Age+allStar, data=nbaOg)
+summary(nbaMod5)
+
+#position confirmed insignificant p-val of 0.7428 > 0.05 -> fail to reject H0
+anova(nbaMod5,lm(sqrtSalary~FGA+TS.+GP+Age+allStar+Position, data=nbaOg))
+```
+
+Qualitative Individual Test for Age
+-   *Hypotheses*:
+  -   $H_0: \beta_4 = 0$ (the linear relationship does not contribute to sqrt salary)
+  -   $H_a: \beta_4 \neq 0$ (the linear relationship does contribute to sqrt salary)
+-   *Distribution of test statistic*: T with 95 DF
+-   *Test Statistic*: t=-6.188
+-   *Pvalue*: 1.54e-08
+-   *Decision*: 1.54e-08 < 0.05 -> REJECT H0
+-   *Conclusion*: The linear relationship does contribute adequate information for predicting sqrt salary.
+
+Qualitative Individual Test for allStar
+-   *Hypotheses*:
+  -   $H_0: \beta_5 = 0$ (the linear relationship does not contribute to sqrt salary)
+  -   $H_a: \beta_5 \neq 0$ (the linear relationship does contribute to sqrt salary)
+-   *Distribution of test statistic*: T with 94 DF
+-   *Test Statistic*: t=2.466
+-   *Pvalue*: 0.01549
+-   *Decision*: 0.01549 < 0.05 -> REJECT H0
+-   *Conclusion*: The linear relationship does contribute adequate information for predicting sqrt salary.
+
+## Residual Analysis: Checking Assumptions
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Graphs for MLR Assumptions
+#residuals plots of explanatory variables vs residuals
+residualPlots(nbaMod5,tests=F)
+
+#residual vs fitted & QQplot
+plot(nbaMod5, which=c(1,2))
+
+#histogram of residuals
+hist(residuals(nbaMod5), main="Histogram of Residuals for nbaMod5", xlab="Residuals of nbaMod5")
+```
+
+* Lack of Fit (Residual Plots): 
+Based on the residual plots, there does not appear to be a clear non-linear trend that could be modeled with a transformation of the explanatory variables. Thus, this assumption is met.
+
+* Constant Variance (Residual Plots & Residual vs Fitted): There appeared to be some “fanning in” patterns in the residuals plots, but the residual vs fitted plot seemed to have constant variance. The constant variance assumption may have been violated, but we have already transformed the response variable (using sqrt) in an earlier step to make it suitable for regression. Thus, we have determined no further transformation was necessary
+
+* Normality (QQ Plot & Histogram of Residuals): Both the histogram and QQplot indicate slight variations from normality. The histogram of residuals displays a unimodal and seemingly symmetric distribution but with a slight skewness as supported by the spacing on the ends of the QQplot. However, regression is robust against this minor violation for large samples (n>50), so the normality assumption is not violated. As we proceed, we should remain cautious of a potentially skewed histogram
+
+* Independence: The independence assumption is reasonably met since we do not have time series data.
+
+## Residual Analysis: Outliers/Influential Observations
+
+```{r, echo=T, warning=FALSE,results=FALSE}
+## Outliers
+#cook's distance
+plot(nbaMod5,which=4)
+#leverage vs studentized residual
+influencePlot(nbaMod5, fill=F)
+
+dffits(nbaMod5)[c(3,15,16,29,40)]
+mean(dffits(nbaMod5))
+dfbetas(nbaMod5)[c(3,15,16,29,40)]
+mean(dfbetas(nbaMod5))
+
+#removed influential pnts (15 & 29 higher adjusted r-sq)
+nbaInflu1 <- nbaOg[-15,]
+nbaMod6 <- lm(sqrtSalary~FGA+TS.+GP+Age+allStar, data=nbaInflu1)
+summary(nbaMod6)
+
+nbaInflu2 <- nbaOg[-c(15,29),]
+nbaMod7 <- lm(sqrtSalary~FGA+TS.+GP+Age+allStar, data=nbaInflu2)
+summary(nbaMod7)
+
+nbaInflu3 <- nbaOg[-29,]
+nbaMod8 <- lm(sqrtSalary~FGA+TS.+GP+Age+allStar, data=nbaInflu3)
+summary(nbaMod8)
+
+#final model
+summary(nbaMod5)
+```
+
+Thresholds: n=100 & k=5
+
+* Studentized Residual (y): +/- 2
+
+* Leverage/Hat (x): 2(k+1)/n = 2(5+1)/100 = 0.12
+
+* Cook's Distance (influ): 4/n = 4/100 = 0.04
+
+Outliers/Influential Points:
+
+* Observation 3: outlier in y-direction (2.495 > 2 studentized residual)
+
+* Observation 15: outlier in y-direction (3.571 > 2 studentized residual), influential (0.098 > 0.04 Cook's Distance)
+
+* Observation 16: outlier in x-direction (0.197 > 0.12 hat value)
+
+* Observation 29: outlier in y-direction (-2.127 < -2 studentized residual); outlier in x-direction (0.141 > 0.12 hat value); influential (0.120 > 0.04 Cook's Distance)
+
+* Observation 40: outlier in x-direction (0.159 > 0.12 hat value)
+
+None of the observations were errors, but two observations (15 & 29) are influential. While there were no known clear reasons for the influential outliers, neither points were chosen to be removed since the model remains robust against whether the influential points were included or removed; only slight changes in the individual p-values of each betas and a minor increase in the adjusted R-squared value.
+
+## Assesing Model Multicollinearity
+
+```{r}
+nbaVif4 <- round(vif(nbaMod5),6)
+nbaVif4 #none over 10
+#average VIF (>3 is concerning)
+mean(nbaVif4) #mean under 3
+```
+
+
+## Final Prediction Equation
+
+$\widehat{sqrtSalary} = 1.435 + 0.148FGA - 0.092TS. + 0.014GP - 1.229AgeU + 1.054allStarY$
+where AgeU = {1 if under 30, 0 otherwise},
+allStarY = {1 if yes, 0 otherwise}

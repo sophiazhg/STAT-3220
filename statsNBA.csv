@@ -1,0 +1,101 @@
+"Player","Salary (mils)","College (in US)","Position","Team","Games Played","Age","Free Throw %","3 Point %","True Shootings %"
+"Cameron Johnson",5.887899,"North Carolina","PF","TOT",42,26,0.842,0.404,0.617
+"Pat Connaughton",5.728393,"Notre Dame","SF","MIL",61,30,0.659,0.339,0.531
+"Kevin Love",30.556968,"UCLA","PF","TOT",62,34,0.879,0.334,0.548
+"Anthony Gill",1.83609,"Virginia","PF","WAS",59,30,0.731,0.138,0.604
+"Keita Bates-Diop",1.87872,"Ohio State","PF","SAS",67,27,0.793,0.394,0.609
+"KZ Okpala",1.902133,"Stanford","PF","SAC",35,23,0.875,0.333,0.554
+"Buddy Hield",21.17775,"Syracuse","SF","IND",80,30,0.822,0.425,0.614
+"Dalano Banton",1.563518,"Nebraska","PG","TOR",31,23,0.708,0.294,0.505
+"Tyrese Maxey",2.72688,"Kentucky","SG","PHI",60,22,0.845,0.434,0.605
+"Serge Ibaka",2.905851,"None","C","MIL",16,33,0.615,0.333,0.553
+"Vit Krejci",1.563518,"None","PG","ATL",29,22,0.5,0.238,0.475
+"Jaden Ivey",7.2522,"Purdue","SG","DET",74,20,0.747,0.343,0.528
+"JD Davison",0.508891,"Alabama","SG","BOS",12,20,0.5,0.286,0.478
+"Markelle Fultz",16.5,"Washington","PG","ORL",60,24,0.783,0.31,0.564
+"Jonathan Isaac",17.4,"Florida State","PF","ORL",11,25,0.556,0.4,0.483
+"Cade Cunningham",10.5528,"Oklahoma State","PG","DET",12,21,0.837,0.279,0.492
+"Jaden Hardy",1.017781,"None","SG","DAL",48,20,0.823,0.404,0.571
+"Luka Garza",0.508891,"Iowa","C","MIN",28,24,0.788,0.359,0.652
+"Bennedict Mathurin",6.5868,"Arizona","SG","IND",78,20,0.828,0.323,0.566
+"Ousmane Dieng",4.56984,"None","PF","OKC",39,19,0.652,0.265,0.505
+"Jordan Hall",0.193027,"St. Joseph's (PA)","SF","SAS",9,21,0.778,0.2,0.438
+"Shaquille Harrison",0.134862,"Tulsa","SG","POR",5,29,0.733,0.3,0.516
+"Ja Morant",12.11944,"Murray State","PG","MEM",61,23,0.748,0.307,0.557
+"Joe Ingles",6.479,"None","SF","MIL",46,35,0.857,0.409,0.616
+"De'Aaron Fox",30.35178,"Kentucky","PG","SAC",73,25,0.78,0.324,0.599
+"Frank Ntilikina",2.036318,"None","SG","DAL",47,24,0.667,0.254,0.461
+"James Harden",33,"Arizona State","PG","PHI",58,33,0.867,0.385,0.607
+"Justin Holiday",5.987975,"Washington","SF","TOT",46,33,0.625,0.322,0.494
+"RaiQuan Gray",0.005849,"Florida State","PF","BRK",1,23,1,0.4,0.621
+"Gary Payton II",8.3,"Oregon State","SG","TOT",22,30,0.857,0.5,0.701
+"Donte DiVincenzo",4.5,"Villanova","SG","GSW",72,26,0.817,0.397,0.593
+"Alex Len",3.9186,"Maryland","C","SAC",26,29,0.688,0,0.58
+"Udonis Haslem",2.905851,"Florida","C","MIA",7,42,0.8,0.333,0.433
+"Eugene Omoruyi",1.013119,"Oregon","SF","TOT",40,25,0.68,0.281,0.533
+"Jeff Dowtin",0.508891,"Rhode Island","PG","TOR",25,25,0.667,0.313,0.5
+"Isaiah Livers",1.563518,"Michigan","PF","DET",52,24,0.821,0.365,0.567
+"Rodney McGruder",2.298385,"Kansas State","SG","DET",32,31,0.818,0.423,0.566
+"Chris Duarte",3.93696,"Oregon","SF","IND",46,25,0.847,0.316,0.496
+"Skylar Mays",0.116574,"Louisiana State","PG","POR",6,25,0.923,0.462,0.624
+"Kevin Durant",44.119845,"Texas","PF","TOT",47,34,0.919,0.404,0.677
+"Mac McClung",0.160856,"Texas Tech","SG","PHI",2,24,0.6,0.364,0.563
+"Theo Pinson",1.968175,"North Carolina","SG","DAL",40,27,0.846,0.355,0.512
+"Dillon Brooks",11.4,"Oregon","SF","MEM",73,27,0.779,0.326,0.494
+"Dejounte Murray",17.07112,"Washington","SG","ATL",74,26,0.832,0.344,0.54
+"JaVale McGee",5.461219,"Nevada","C","DAL",42,35,0.585,0.4,0.65
+"Jordan Goodwin",1.280206,"St. Louis","PG","WAS",62,24,0.768,0.322,0.531
+"Nicolas Batum",19.700319,"None","PF","LAC",78,34,0.708,0.391,0.594
+"Christian Braun",2.8086,"Kansas","SG","DEN",76,21,0.625,0.354,0.568
+"Gordon Hayward",30.075,"Butler","SF","CHO",50,32,0.811,0.325,0.563
+"Scottie Barnes",7.6446,"Florida State","SF","TOR",77,21,0.772,0.281,0.524
+"Zach Collins",7.35,"Gonzaga","C","SAS",63,25,0.761,0.374,0.599
+"Kennedy Chandler",1.2,"Tennessee","PG","MEM",36,20,0.462,0.133,0.44
+"Jalen Duren",4.12428,"Memphis","C","DET",67,19,0.611,0,0.655
+"Brook Lopez",13.906976,"Stanford","C","MIL",78,34,0.784,0.374,0.63
+"Paolo Banchero",11.05512,"Duke","PF","ORL",72,20,0.738,0.298,0.529
+"Jamal Murray",31.6506,"Kentucky","PG","DEN",65,25,0.833,0.398,0.571
+"Rui Hachimura",6.263188,"Gonzaga","PF","TOT",63,24,0.739,0.319,0.556
+"Deni Avdija",4.91616,"None","SF","WAS",76,22,0.739,0.297,0.535
+"Harrison Barnes",18.352273,"North Carolina","PF","SAC",82,30,0.847,0.374,0.632
+"Cedi Osman",7.426088,"None","SF","CLE",77,27,0.694,0.372,0.579
+"Daishen Nix",1.563518,"None","PG","HOU",57,20,0.667,0.286,0.447
+"Doug McDermott",13.75,"Creighton","SF","SAS",64,31,0.757,0.413,0.59
+"Cory Joseph",5.1555,"Texas","PG","DET",62,31,0.792,0.389,0.558
+"Malik Beasley",15.558035,"Florida State","SG","TOT",81,26,0.769,0.357,0.531
+"Oshae Brissett",1.846738,"Syracuse","PF","IND",65,24,0.717,0.31,0.52
+"De'Andre Hunter",9.835881,"Virgina","SF","ATL",67,25,0.826,0.35,0.563
+"Donovan Mitchell",30.91375,"Louisville","SG","CLE",68,26,0.867,0.386,0.614
+"Evan Mobley",8.47872,"Southern California","PF","CLE",79,21,0.674,0.216,0.591
+"Wenyen Gabriel",1.87872,"Kentucky","C","LAL",68,25,0.619,0.278,0.626
+"Malcolm Brogdon",22.6,"Virginia","PG","BOS",67,30,0.87,0.444,0.615
+"Sandro Mamukelashvili",1.116112,"Seton Hall","C","TOT",43,23,0.684,0.303,0.516
+"Furkan Korkmaz",5,"None","SG","PHI",37,25,0.722,0.391,0.552
+"Mike Muscala",3.5,"Bucknell","C","TOT",63,31,0.769,0.391,0.608
+"Jordan Poole",3.901399,"Michigan","PG","GSW",82,23,0.87,0.336,0.573
+"Damion Lee",2.133278,"Drexel","SG","PHO",74,30,0.904,0.445,0.607
+"Josh Okogie",1.968175,"Georgia Tech","SG","PHO",72,24,0.724,0.335,0.531
+"Talen Horton-Tucker",10.26,"Iowa State","SG","UTA",65,22,0.75,0.286,0.508
+"Jarrett Allen",20,"Texas","C","CLE",68,24,0.733,0.1,0.67
+"Jarrett Culver",0.260295,"Texas Tech","SF","ATL",10,23,0.692,0.083,0.452
+"Wesley Matthews",2.905851,"Marquette","SF","MIL",52,36,0.857,0.315,0.519
+"Georges Niang",3.465,"Iowa State","PF","PHI",78,29,0.867,0.401,0.61
+"John Konchar",2.3,"Indiana-Purdue Fort Wayne","SF","MEM",72,26,0.778,0.339,0.542
+"George Hill",4,"Indiana-Purdue Indianapolis","PG-SG","TOT",46,36,0.764,0.358,0.61
+"James Johnson",3.841067,"Wake Forest","PF","IND",18,35,0.5,0.2,0.486
+"Evan Fournier",18,"None","SG","NYK",27,30,0.857,0.307,0.471
+"Cole Anthony",3.61368,"North Carolina","PG","ORL",60,22,0.894,0.364,0.57
+"Cody Martin",7,"Nevada","SF","CHO",7,27,0.571,0.214,0.448
+"Blake Griffin",2.905851,"Oklahoma","C","BOS",41,33,0.656,0.348,0.59
+"Shai Gilgeous-Alexander",30.91375,"Kentucky","PG","OKC",68,24,0.905,0.345,0.626
+"Damian Jones",2.298385,"Vanderbilt","C","TOT",41,27,0.759,0.588,0.719
+"Mikal Bridges",20.1,"Villanova","SF-SG","TOT",83,26,0.895,0.382,0.587
+"Naji Marshall",1.782621,"Xavier","SF","NOP",77,25,0.789,0.303,0.539
+"Al Horford",26.5,"Florida","C","BOS",63,36,0.714,0.446,0.631
+"Chris Paul",28.4,"Wake Forest","PG","PHO",59,37,0.831,0.375,0.555
+"Facundo Campazzo",0.464299,"None","PG","DAL",8,31,0.5,0.273,0.36
+"Alec Burks",10.0128,"Colorado","SG","DET",51,31,0.814,0.414,0.602
+"Will Barton",15.059712,"Memphis","SG","TOT",56,32,0.787,0.367,0.493
+"Robert Covington",12.307692,"Tennessee State","PF","LAC",48,32,0.75,0.397,0.584
+"Torrey Craig",5.121951,"South Carolina Upstate","PF","PHO",79,32,0.711,0.395,0.566
+"Tre Mann",3.0462,"Florida","PG","OKC",67,21,0.764,0.315,0.492
